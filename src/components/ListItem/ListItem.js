@@ -2,19 +2,22 @@ import "./ListItem.css";
 import CheckIcon from "@mui/icons-material/Check";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useContext, useState } from "react";
-import { ToDoListContext } from "../../contexts/ToDoListContext";
-import AlertDialog from "../Dialogs/AlertDialog/AlertDialog";
-import EditToDoItemDialog from "../Dialogs/EditToDoItemDialog/EditToDoItemDialog";
+import { useContext } from "react";
+import {
+  SnackBarDisplayHandlerContext,
+  ToDoListContext,
+} from "../../contexts/ToDoListContext";
+
 import { enLocalStorageKeys } from "../../consts/LocalStorageKeys.enum";
 
-export default function ListItem({ setRunUseEffectState, toDoItem }) {
-  //states
-  let [openDeleteDialogState, setOpenDeleteDialogState] = useState(false);
-  let [openEditDialogState, setOpenEditDialogState] = useState(false);
-
+export default function ListItem({
+  toDoItem,
+  setOpenDeleteDialogState,
+  setOpenEditDialogState,
+}) {
   //context
   let toDosStateObj = useContext(ToDoListContext);
+  let snackBarDisplayHandlerContext = useContext(SnackBarDisplayHandlerContext);
 
   //functions
   function setIsCompletedHandler(isCompleted) {
@@ -29,33 +32,7 @@ export default function ListItem({ setRunUseEffectState, toDoItem }) {
       enLocalStorageKeys.toDos,
       JSON.stringify(newToDosList)
     );
-  }
-
-  function deleteItemFromList() {
-    let newToDosList = toDosStateObj.toDosState.filter(
-      (item) => item.id !== toDoItem.id
-    );
-    toDosStateObj.setToDosState(newToDosList);
-    localStorage.setItem(
-      enLocalStorageKeys.toDos,
-      JSON.stringify(newToDosList)
-    );
-  }
-
-  function confirmEditItemHandler(newTitle, newDescription) {
-    let newToDosList = toDosStateObj.toDosState.map((item) => {
-      if (item.id === toDoItem.id) {
-        item.title = newTitle;
-        item.description = newDescription;
-      }
-
-      return item;
-    });
-    toDosStateObj.setToDosState(newToDosList);
-    localStorage.setItem(
-      enLocalStorageKeys.toDos,
-      JSON.stringify(newToDosList)
-    );
+    snackBarDisplayHandlerContext("تم تعديل المهمة بنجاح");
   }
 
   //methods
@@ -100,7 +77,9 @@ export default function ListItem({ setRunUseEffectState, toDoItem }) {
           {getCheckedIcon()}
           <span
             style={{ borderColor: "var(--mui-palette-secondary-main)" }}
-            onClick={() => setOpenEditDialogState(true)}
+            onClick={() =>
+              setOpenEditDialogState({ item: toDoItem, display: true })
+            }
           >
             <CreateIcon
               className="icon"
@@ -109,34 +88,14 @@ export default function ListItem({ setRunUseEffectState, toDoItem }) {
           </span>
           <span
             style={{ borderColor: "red" }}
-            onClick={() => setOpenDeleteDialogState(true)}
+            onClick={() =>
+              setOpenDeleteDialogState({ itemId: toDoItem.id, display: true })
+            }
           >
             <DeleteIcon className="icon" color="danger" />
           </span>
         </div>
       </div>
-
-      {/* start delete dialog  */}
-      <AlertDialog
-        isOpen={openDeleteDialogState}
-        dialogTitle="هل أنت متأكد من رغبتك فى حذف المهمة؟"
-        dialogDescription="لا يمكنك التراجع عن الحذف فى حال اختيار زر حذف"
-        agreeText="نعم قم بالحذف"
-        disagreeText="إغلاق"
-        setOpenDeleteDialogState={setOpenDeleteDialogState}
-        deleteItemFromListHandler={deleteItemFromList}
-      />
-      {/* end delete dialog  */}
-
-      {/* start edit dialog */}
-      <EditToDoItemDialog
-        isOpen={openEditDialogState}
-        setOpenDialogStateHandler={setOpenEditDialogState}
-        confirmEditHandler={confirmEditItemHandler}
-        itemTitle={toDoItem.title}
-        itemDescription={toDoItem.description}
-      />
-      {/* end edit dialog */}
     </>
   );
 }

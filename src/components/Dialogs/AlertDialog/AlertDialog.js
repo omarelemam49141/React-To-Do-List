@@ -14,6 +14,7 @@ export default function AlertDialog({
   disagreeText,
   setOpenDeleteDialogState,
   deleteItemFromListHandler,
+  itemId,
 }) {
   const handleClose = () => {
     setOpenDeleteDialogState(false);
@@ -36,7 +37,7 @@ export default function AlertDialog({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>{disagreeText}</Button>
-          <Button onClick={deleteItemFromListHandler} autoFocus>
+          <Button onClick={() => deleteItemFromListHandler(itemId)} autoFocus>
             {agreeText}
           </Button>
         </DialogActions>

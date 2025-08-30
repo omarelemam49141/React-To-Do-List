@@ -8,15 +8,18 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 export default function EditToDoItemDialog({
   isOpen,
-  itemTitle,
-  itemDescription,
+  item,
   setOpenDialogStateHandler,
   confirmEditHandler,
 }) {
   //states
-  let [itemTitleState, setItemTitleState] = React.useState(itemTitle);
-  let [itemDescriptionState, setItemDescriptionState] =
-    React.useState(itemDescription);
+  let [itemTitleState, setItemTitleState] = React.useState();
+  let [itemDescriptionState, setItemDescriptionState] = React.useState();
+
+  React.useEffect(() => {
+    setItemTitleState(item?.title);
+    setItemDescriptionState(item?.description);
+  }, [item]);
 
   const handleClose = () => {
     setOpenDialogStateHandler(false);
@@ -24,7 +27,7 @@ export default function EditToDoItemDialog({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    confirmEditHandler(itemTitleState, itemDescriptionState);
+    confirmEditHandler(item.id, itemTitleState, itemDescriptionState);
     handleClose();
   };
 

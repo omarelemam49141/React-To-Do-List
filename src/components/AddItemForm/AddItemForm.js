@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import "./AddItemForm.css";
 import Button from "@mui/material/Button";
 import { v4 as uuidv4 } from "uuid";
 import { enLocalStorageKeys } from "../../consts/LocalStorageKeys.enum";
+import { SnackBarDisplayHandlerContext } from "../../contexts/ToDoListContext";
 
 export default function AddItemForm({ setToDosState }) {
   //States
   const [taskTitle, setTaskTitle] = useState("");
+
+  //contexts
+  let snackBarDisplayHandlerContext = useContext(SnackBarDisplayHandlerContext);
 
   //functions
   function addNewToDoItem(toDoTitle) {
@@ -19,6 +23,7 @@ export default function AddItemForm({ setToDosState }) {
       enLocalStorageKeys.toDos,
       JSON.stringify(newToDosList)
     );
+    snackBarDisplayHandlerContext("تم إضافة مهمة بنجاح");
   }
 
   return (
