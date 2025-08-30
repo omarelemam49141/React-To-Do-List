@@ -3,15 +3,13 @@ import AddItemForm from "../AddItemForm/AddItemForm";
 import ListItem from "../ListItem/ListItem";
 import MyMenu from "../Menu/MyMenu";
 import { v4 as uuidv4 } from "uuid";
-import {
-  SnackBarDisplayHandlerContext,
-  ToDoListContext,
-} from "../../contexts/ToDoListContext";
+import { ToDoListContext } from "../../contexts/ToDoListContext";
 import { enLocalStorageKeys } from "../../consts/LocalStorageKeys.enum";
 import { enToDoFilter } from "../../contexts/ToDoFilter";
 import AlertDialog from "../Dialogs/AlertDialog/AlertDialog";
 import EditToDoItemDialog from "../Dialogs/EditToDoItemDialog/EditToDoItemDialog";
 import "./ToDoList.css";
+import { useToast } from "../../providers/ToastProvider";
 
 let toDosInitial = [
   {
@@ -42,7 +40,7 @@ export default function ToDoList() {
   });
 
   //contexts
-  let snackBarDisplayHandlerContext = useContext(SnackBarDisplayHandlerContext);
+  let snackBarDisplayHandlerContext = useToast();
 
   //hooks
   useEffect(() => {

@@ -4,13 +4,14 @@ import Button from "@mui/material/Button";
 import { v4 as uuidv4 } from "uuid";
 import { enLocalStorageKeys } from "../../consts/LocalStorageKeys.enum";
 import { SnackBarDisplayHandlerContext } from "../../contexts/ToDoListContext";
+import { useToast } from "../../providers/ToastProvider";
 
 export default function AddItemForm({ setToDosState }) {
   //States
   const [taskTitle, setTaskTitle] = useState("");
 
   //contexts
-  let snackBarDisplayHandlerContext = useContext(SnackBarDisplayHandlerContext);
+  let snackBarDisplayHandlerContext = useToast();
 
   //functions
   function addNewToDoItem(toDoTitle) {

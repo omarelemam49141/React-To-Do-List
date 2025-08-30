@@ -4,11 +4,11 @@ import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useContext } from "react";
 import {
-  SnackBarDisplayHandlerContext,
   ToDoListContext,
 } from "../../contexts/ToDoListContext";
 
 import { enLocalStorageKeys } from "../../consts/LocalStorageKeys.enum";
+import { useToast } from "../../providers/ToastProvider";
 
 export default function ListItem({
   toDoItem,
@@ -17,7 +17,7 @@ export default function ListItem({
 }) {
   //context
   let toDosStateObj = useContext(ToDoListContext);
-  let snackBarDisplayHandlerContext = useContext(SnackBarDisplayHandlerContext);
+  let snackBarDisplayHandlerContext = useToast();
 
   //functions
   function setIsCompletedHandler(isCompleted) {

@@ -4,24 +4,9 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { blue, green, red } from "@mui/material/colors";
 import ToDoList from "./components/ToDoList/ToDoList";
 import { useState } from "react";
-import SuccessSnackBar from "./components/snackbars/SuccessSnackBar/SuccessSnackBar";
-import { SnackBarDisplayHandlerContext } from "./contexts/ToDoListContext";
+import { ToastProvider } from "./providers/ToastProvider";
 
 function App() {
-  //states
-  let [openSuccessSnackBarState, setOpenSuccessSnackBarState] = useState(false);
-  let [snackBarMessageState, setSnackBarMessageState] = useState(null);
-
-  //methods
-  function closeSuccessSnackBar() {
-    setOpenSuccessSnackBarState(false);
-  }
-
-  function openSnackBarHandler(message) {
-    setOpenSuccessSnackBarState(true);
-    setSnackBarMessageState(message);
-  }
-
   //properties
   const theme = createTheme({
     cssVariables: true,
@@ -44,19 +29,12 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <SnackBarDisplayHandlerContext.Provider value={openSnackBarHandler}>
+        <ToastProvider>
           <Container className="container" maxWidth="md">
             <ToDoList />
           </Container>
-        </SnackBarDisplayHandlerContext.Provider>
+        </ToastProvider>
       </div>
-      {/* Start success snack bar */}
-      <SuccessSnackBar
-        isOpen={openSuccessSnackBarState}
-        closeHandler={closeSuccessSnackBar}
-        message={snackBarMessageState}
-      />
-      {/* end success snack bar */}
     </ThemeProvider>
   );
 }
