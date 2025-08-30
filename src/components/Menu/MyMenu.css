@@ -1,0 +1,22 @@
+.menu {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 0 !important;
+}
+
+.menu li {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.menu li:hover, .menu li.active {
+    background-color: var(--mui-palette-primary-main);
+    color: white;
+    border-color: var(--mui-palette-primary-main);
+}
+

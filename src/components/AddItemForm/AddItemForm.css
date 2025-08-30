@@ -1,0 +1,19 @@
+.addTaskForm {
+    display: flex;
+    gap: 24px;
+    direction: rtl;
+}
+
+.addTaskForm input[type='text'] {
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 10px;
+    color: gray;
+    width: 100%;
+    font-size: 20px;
+}
+
+.submit-btn {
+    padding: 10px 60px !important;
+    font-size: 20px !important;
+}

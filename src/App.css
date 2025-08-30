@@ -1,38 +1,73 @@
+/* start fonts */
+@font-face {
+  font-family: Alex;
+  src: url("/public/fonts/Alexandria-Black.ttf");
+  font-weight: black;
+}
+
+@font-face {
+  font-family: Alex;
+  src: url("/public/fonts/Alexandria-ExtraLight.ttf");
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: Alex;
+  src: url("/public/fonts/Alexandria-Light.ttf");
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: Alex;
+  src: url("/public/fonts/Alexandria-Medium.ttf");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: Alex;
+  src: url("/public/fonts/Alexandria-Regular.ttf");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: Alex;
+  src: url("/public/fonts/Alexandria-Bold.ttf");
+  font-weight: bold;
+}
+
+
+/* end fonts */
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: Alex;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
 .App {
+  background-color: rgba(0, 0, 0, 0.74);
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
   text-align: center;
+  border-radius: 10px;
+  background-color: white;
+  margin-top: 50px;
+  padding-bottom: 24px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App h1 {
+  border-bottom: 1px solid gray;
+  padding-bottom: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}

@@ -1,0 +1,66 @@
+.list-item {
+    background-color: rgb(28, 58, 121);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    direction: rtl;
+}
+
+.list-item .info {
+    text-align: right;
+
+}
+
+.list-item .info h3 {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.list-item .info p {
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.actions {
+    display: flex;
+    gap: 15px;
+}
+
+.actions span {
+    display: inline-block;
+    background-color: white;
+    border-style: solid;
+    border-radius: 50%;
+    border-width: 2px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.actions span:hover .icon {
+    color: white !important;
+}
+
+.actions span:first-of-type:hover {
+    background-color: var(--mui-palette-primary-main);
+}
+
+.actions span:nth-child(2):hover {
+    background-color: var(--mui-palette-secondary-main);
+}
+
+
+.actions span:last-child:hover {
+    background-color: var(--mui-palette-danger-main);
+}
+
+
