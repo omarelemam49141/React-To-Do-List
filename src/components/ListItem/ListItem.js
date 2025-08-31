@@ -2,13 +2,9 @@ import "./ListItem.css";
 import CheckIcon from "@mui/icons-material/Check";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useContext } from "react";
-import {
-  ToDoListContext,
-} from "../../contexts/ToDoListContext";
-
-import { enLocalStorageKeys } from "../../consts/LocalStorageKeys.enum";
 import { useToast } from "../../providers/ToastProvider";
+import { useToDosReducerContext } from "../../providers/ToDosReducerProvider";
+import { enToDoReducerActionType } from "../../consts/ToDoReducerType";
 
 export default function ListItem({
   toDoItem,
@@ -16,22 +12,15 @@ export default function ListItem({
   setOpenEditDialogState,
 }) {
   //context
-  let toDosStateObj = useContext(ToDoListContext);
   let snackBarDisplayHandlerContext = useToast();
+  let { dispatchToDosReducer } = useToDosReducerContext();
 
   //functions
   function setIsCompletedHandler(isCompleted) {
-    let newToDosList = toDosStateObj.toDosState.map((item) => {
-      if (item.id === toDoItem.id) {
-        item.isCompleted = isCompleted;
-      }
-      return item;
+    dispatchToDosReducer({
+      type: enToDoReducerActionType.modifyState,
+      payload: { isCompleted, id: toDoItem.id },
     });
-    toDosStateObj.setToDosState(newToDosList);
-    localStorage.setItem(
-      enLocalStorageKeys.toDos,
-      JSON.stringify(newToDosList)
-    );
     snackBarDisplayHandlerContext("تم تعديل المهمة بنجاح");
   }
 

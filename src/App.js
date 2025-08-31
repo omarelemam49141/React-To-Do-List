@@ -5,6 +5,7 @@ import { blue, green, red } from "@mui/material/colors";
 import ToDoList from "./components/ToDoList/ToDoList";
 import { useState } from "react";
 import { ToastProvider } from "./providers/ToastProvider";
+import { ToDosReducerProvider } from "./providers/ToDosReducerProvider";
 
 function App() {
   //properties
@@ -31,7 +32,9 @@ function App() {
       <div className="App">
         <ToastProvider>
           <Container className="container" maxWidth="md">
-            <ToDoList />
+            <ToDosReducerProvider>
+              <ToDoList />
+            </ToDosReducerProvider>
           </Container>
         </ToastProvider>
       </div>

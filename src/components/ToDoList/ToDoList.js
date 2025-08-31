@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import AddItemForm from "../AddItemForm/AddItemForm";
 import ListItem from "../ListItem/ListItem";
 import MyMenu from "../Menu/MyMenu";
@@ -10,6 +10,12 @@ import AlertDialog from "../Dialogs/AlertDialog/AlertDialog";
 import EditToDoItemDialog from "../Dialogs/EditToDoItemDialog/EditToDoItemDialog";
 import "./ToDoList.css";
 import { useToast } from "../../providers/ToastProvider";
+import { ToDosReducer } from "../../reducers/ToDosReducer";
+import {
+  enToDoReducerActionType,
+  enToDoReducerType,
+} from "../../consts/ToDoReducerType";
+import { useToDosReducerContext } from "../../providers/ToDosReducerProvider";
 
 let toDosInitial = [
   {
@@ -28,7 +34,7 @@ let toDosInitial = [
 
 export default function ToDoList() {
   //States
-  let [toDos, setToDos] = useState(toDosInitial);
+  let { toDos, dispatchToDosReducer } = useToDosReducerContext();
   let [filterToDosBy, setFilterToDosBy] = useState(enToDoFilter.All);
   let [openDeleteDialogState, setOpenDeleteDialogState] = useState({
     itemId: null,
@@ -44,12 +50,7 @@ export default function ToDoList() {
 
   //hooks
   useEffect(() => {
-    let toDosInLocalStorage = localStorage.getItem(enLocalStorageKeys.toDos);
-    let parsedToDos = toDosInLocalStorage
-      ? JSON.parse(toDosInLocalStorage)
-      : toDosInitial;
-
-    setToDos(parsedToDos);
+    dispatchToDosReducer({ type: enToDoReducerActionType.getAll });
   }, []);
 
   //handlers
@@ -58,30 +59,19 @@ export default function ToDoList() {
   }
 
   function deleteItemFromList(itemId) {
-    let newToDosList = toDos.filter((item) => item.id !== itemId);
-    setToDos(newToDosList);
-    localStorage.setItem(
-      enLocalStorageKeys.toDos,
-      JSON.stringify(newToDosList)
-    );
+    dispatchToDosReducer({
+      type: enToDoReducerActionType.delete,
+      payload: { id: itemId },
+    });
     setOpenDeleteDialogState({ item: null, display: false });
     snackBarDisplayHandlerContext("تم حذف المهمة بنجاح");
   }
 
   function confirmEditItemHandler(itemId, newTitle, newDescription) {
-    let newToDosList = toDos.map((item) => {
-      if (item.id === itemId) {
-        item.title = newTitle;
-        item.description = newDescription;
-      }
-
-      return item;
+    dispatchToDosReducer({
+      type: enToDoReducerActionType.edit,
+      payload: { id: itemId, newTitle, newDescription },
     });
-    setToDos(newToDosList);
-    localStorage.setItem(
-      enLocalStorageKeys.toDos,
-      JSON.stringify(newToDosList)
-    );
     snackBarDisplayHandlerContext("تم تعديل المهمة بنجاح");
   }
 
@@ -93,7 +83,7 @@ export default function ToDoList() {
     filteredToDos = filteredToDos.filter((item) => !item.isCompleted);
   }
 
-  let toDosList = filteredToDos.map((item) => {
+  let toDosList = filteredToDos?.map((item) => {
     return (
       <div className="mb-4">
         <ListItem
@@ -119,14 +109,11 @@ export default function ToDoList() {
         />
       </div>
 
-      <ToDoListContext.Provider
-        value={{ toDosState: toDos, setToDosState: setToDos }}
-      >
         <div className="list-items">{toDosList}</div>
-      </ToDoListContext.Provider>
+
 
       <div className="mb-4 mt-4">
-        <AddItemForm setToDosState={{ toDos, setToDos }} />
+        <AddItemForm />
       </div>
 
       {/* start delete dialog  */}

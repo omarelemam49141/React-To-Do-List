@@ -3,27 +3,24 @@ import "./AddItemForm.css";
 import Button from "@mui/material/Button";
 import { v4 as uuidv4 } from "uuid";
 import { enLocalStorageKeys } from "../../consts/LocalStorageKeys.enum";
-import { SnackBarDisplayHandlerContext } from "../../contexts/ToDoListContext";
 import { useToast } from "../../providers/ToastProvider";
+import { useToDosReducerContext } from "../../providers/ToDosReducerProvider";
+import { enToDoReducerActionType } from "../../consts/ToDoReducerType";
 
-export default function AddItemForm({ setToDosState }) {
+export default function AddItemForm() {
   //States
   const [taskTitle, setTaskTitle] = useState("");
+  let { toDos, dispatchToDosReducer } = useToDosReducerContext();
 
   //contexts
   let snackBarDisplayHandlerContext = useToast();
 
   //functions
   function addNewToDoItem(toDoTitle) {
-    let newToDosList = [
-      ...setToDosState.toDos,
-      { id: uuidv4(), title: toDoTitle, description: "", isCompleted: false },
-    ];
-    setToDosState.setToDos(newToDosList);
-    localStorage.setItem(
-      enLocalStorageKeys.toDos,
-      JSON.stringify(newToDosList)
-    );
+    dispatchToDosReducer({
+      type: enToDoReducerActionType.add,
+      payload: { newTitle: toDoTitle },
+    });
     snackBarDisplayHandlerContext("تم إضافة مهمة بنجاح");
   }
 
